@@ -1,0 +1,6 @@
+FROM python:3.6-alpine
+COPY requirements.txt /src/
+WORKDIR /src/
+RUN pip install -r requirements.txt
+ARG BASE_VERSION
+ENV BASE_VERSION=$BASE_VERSION
