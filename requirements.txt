@@ -6,7 +6,6 @@ certifi==2018.10.15
 cffi==1.11.5
 chardet==3.0.4
 Click==7.0
-cryptography==2.4.1
 dnspython==1.15.0
 docutils==0.14
 email-validator==1.0.3
