@@ -1,2 +1,5 @@
 .idea/
 latest.tar
+deployment/
+__pycache__/
+schema/__pycache__/
