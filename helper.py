@@ -1,12 +1,10 @@
+import csv
 import json
 
 import boto3
 from botocore.exceptions import ClientError
 from email_validator import validate_email, EmailNotValidError
 from eve.io.mongo import Validator
-import pandas as pd
-import io
-import csv
 
 from logger import get_logger
 from settings import PINCODE_BUCKET_NAME, PINCODE_FILENAME, AWS_ACCESS_KEY, AWS_SECRET_KEY

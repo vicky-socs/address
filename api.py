@@ -1,9 +1,10 @@
+from datetime import datetime
+
 import requests
 from eve import Eve
 from eve_swagger import swagger, add_documentation
 from flask import request
 from gevent.pywsgi import WSGIServer
-from datetime import datetime
 
 from helper import ZylaValidator, get_response_data, get_request_data, fetch_pincode_data
 from logger import get_logger, get_sentry_handler
