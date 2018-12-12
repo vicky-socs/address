@@ -150,7 +150,8 @@ address_resource = {
         "patient_index": ([("patientId", 1)], {"background": True})
     },
     "item_methods":["GET","PATCH","PUT"],
-    "resource_methods" :["GET","POST"]
+    "resource_methods" :["GET","POST"],
+    "id_field":"patientId"
 }
 
 DOMAIN = {
