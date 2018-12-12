@@ -129,7 +129,9 @@ pincode_resource = {
     },
     "mongo_indexes": {
         "pincode_index": ([("pincode", 1)], {"background": True})
-    }
+    },
+    "item_methods":["GET","PATCH","PUT"],
+    "resource_methods" :["GET","POST"]
 }
 
 pincode_version_resource = {
@@ -146,7 +148,9 @@ address_resource = {
     },
     "mongo_indexes": {
         "patient_index": ([("patientId", 1)], {"background": True})
-    }
+    },
+    "item_methods":["GET","PATCH","PUT"],
+    "resource_methods" :["GET","POST"]
 }
 
 DOMAIN = {
