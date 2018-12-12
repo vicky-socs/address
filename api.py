@@ -81,7 +81,7 @@ if __name__ == "__main__":
             app.logger.info("Exiting service")
     else:
         try:
-            http_server = WSGIServer(('0.0.0.0', 5000), application=app, backlog=256)
+            http_server = WSGIServer(('0.0.0.0', 5000), application=app, backlog=1000, spawn=10)
             http_server.serve_forever()
         except KeyboardInterrupt as e:
             app.logger.info("Exiting Service")
