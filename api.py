@@ -3,6 +3,7 @@ from datetime import datetime
 from http import HTTPStatus
 
 import requests
+from bson import ObjectId
 from bson.json_util import dumps
 from eve import Eve
 from eve_swagger import add_documentation, swagger
@@ -66,8 +67,8 @@ def load_pincode_data():
         pincode_version_data = pincode_version_data[0]
         pincode_version = pincode_version_data.get("version")
         pincode_data, insert = fetch_pincode_data(
-                pincode_version=pincode_version,
-                verify_checksum=True)
+            pincode_version=pincode_version,
+            verify_checksum=True)
     else:
         pincode_data, insert = fetch_pincode_data()
     if insert:
@@ -102,6 +103,19 @@ def update_address_on_post(items):
             return response_data
 
 
+def get_create_data(request: Request, response: Response):
+    resource_name, type_ = request.endpoint.split("|")
+    if type_ == "resource":
+        response_data = response.json
+        resource_id = response_data.get("_id")
+        payload = {
+            "_id": ObjectId(resource_id)
+        }
+        resource_data = app.data.find_one(resource_name, None,
+                                          False, False, **payload)
+        return resource_data, HTTPStatus.CREATED
+
+
 def update_address_on_post_callback(request: Request, response: Response):
     response_data = response.json
     issues = response_data.get("issues")
@@ -111,6 +125,11 @@ def update_address_on_post_callback(request: Request, response: Response):
             updated = update_address_on_post(items=items)
             response.data = dumps(sanitize_data(updated))
             response.status_code = HTTPStatus.OK
+    else:
+        if response.status_code == HTTPStatus.CREATED:
+            response_data, status_code = get_create_data(request=request,
+                                                         response=response)
+            response.data = dumps(sanitize_data(response_data))
 
 
 add_documentation(custom_paths)
