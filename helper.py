@@ -1,15 +1,16 @@
 import csv
 import json
+from datetime import datetime
 
 import boto3
 from botocore.exceptions import ClientError
+from bson import ObjectId
 from email_validator import validate_email, EmailNotValidError
 from eve.io.mongo import Validator
-from bson import ObjectId
-from datetime import datetime
 
 from logger import get_logger
-from settings import PINCODE_BUCKET_NAME, PINCODE_FILENAME, AWS_ACCESS_KEY, AWS_SECRET_KEY
+from settings import PINCODE_BUCKET_NAME, PINCODE_FILENAME, \
+    AWS_ACCESS_KEY, AWS_SECRET_KEY
 
 log = get_logger("address_logger")
 
@@ -96,14 +97,17 @@ def update_pincode_db(file_stream=None, refresh=False):
         }
         payload_items.append(payload)
         if len(payload_items) > 999:
-            insert_pincode_data(payload_data_list=payload_items, refresh=refresh)
+            insert_pincode_data(payload_data_list=payload_items,
+                                refresh=refresh)
             refresh = False
             payload_items = []
         if line_no == pincode_len:
-            insert_pincode_data(payload_data_list=payload_items, refresh=refresh)
+            insert_pincode_data(payload_data_list=payload_items,
+                                refresh=refresh)
     return True
 
-def get_data_from_s3(s3, tag = False):
+
+def get_data_from_s3(s3, tag=False):
     body = None
     if tag:
         md5sum = s3.head_object(
@@ -120,6 +124,7 @@ def get_data_from_s3(s3, tag = False):
         body = data.get("Body")
     return md5sum, body
 
+
 def fetch_pincode_data(pincode_version=None, verify_checksum=False):
     """
 
@@ -127,7 +132,8 @@ def fetch_pincode_data(pincode_version=None, verify_checksum=False):
     :param verify_checksum:
     :return:
     """
-    s3 = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_KEY)
+    s3 = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY,
+                      aws_secret_access_key=AWS_SECRET_KEY)
     update = False
     md5sum = None
     if verify_checksum:
@@ -147,6 +153,7 @@ def fetch_pincode_data(pincode_version=None, verify_checksum=False):
         except Exception as e:
             log.error(e)
     return md5sum, update
+
 
 def sanitize_data(data):
     if isinstance(data, ObjectId):

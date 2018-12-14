@@ -1,12 +1,13 @@
 import logging
 import sys
-from logging import INFO, ERROR
+from logging import ERROR, INFO
 from uuid import uuid4
 
 from raven.conf import setup_logging
 from raven.handlers.logging import SentryHandler
 
 from settings import SENTRY_DSN
+
 
 INFO_FORMAT = "%(asctime)s [ %(name)s::%(levelname)s::%(request_id)s ] %(" \
               "process)d %(message)s"

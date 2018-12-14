@@ -1,1 +1,1 @@
-from .schema import custom_paths
+from .schema import custom_paths  # noqa: F401

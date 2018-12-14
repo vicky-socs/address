@@ -1,19 +1,22 @@
+import copy
 from datetime import datetime
+from http import HTTPStatus
 
 import requests
-from eve import Eve
-from eve_swagger import swagger, add_documentation
-from flask import request, Request, Response, json
-from gevent.pywsgi import WSGIServer
-import copy
-from http import HTTPStatus
 from bson.json_util import dumps
+from eve import Eve
+from eve_swagger import add_documentation, swagger
+from flask import request, Request, Response
+from gevent.pywsgi import WSGIServer
 
-from helper import ZylaValidator, get_response_data, get_request_data, fetch_pincode_data, sanitize_data
+from helper import (
+    fetch_pincode_data, get_request_data, get_response_data,
+    sanitize_data, ZylaValidator
+)
 from logger import get_logger, get_sentry_handler
 from schema import custom_paths
-from settings import LOG_LEVEL, RELEASE_VERSION
-from settings import redis_conn, DEBUG
+from settings import DEBUG, LOG_LEVEL, redis_conn, RELEASE_VERSION
+
 
 app = Eve(redis=redis_conn, validator=ZylaValidator)
 app.register_blueprint(swagger)
@@ -56,12 +59,15 @@ def log_every_response(response):
 
 
 def load_pincode_data():
-    pincode_version_data = app.data.find("pincode_version", None, None).sort("_created", -1)
+    pincode_version_data = app.data.find("pincode_version",
+                                         None, None).sort("_created", -1)
     data_count = pincode_version_data.count()
     if data_count:
         pincode_version_data = pincode_version_data[0]
         pincode_version = pincode_version_data.get("version")
-        pincode_data, insert = fetch_pincode_data(pincode_version=pincode_version, verify_checksum=True)
+        pincode_data, insert = fetch_pincode_data(
+                pincode_version=pincode_version,
+                verify_checksum=True)
     else:
         pincode_data, insert = fetch_pincode_data()
     if insert:
@@ -80,16 +86,21 @@ def update_address_on_post(items):
         payload = copy.deepcopy(items)
         payload_key = "patientId"
         payload_data = {}
-        for k,v in payload.items():
+        for k, v in payload.items():
             if k == payload_key:
-                payload_data.update({k:v})
-        patient_address = app.data.find_one("patient_address",None, False, False, **payload_data)
+                data = {k: v}
+                payload_data.update(data)
+        patient_address = app.data.find_one("patient_address", None,
+                                            False, False, **payload_data)
         if patient_address:
             address_id = patient_address.get("_id")
             payload.pop("patientId")
-            updated_data = app.data.update("patient_address", address_id, payload, patient_address)
-            response_data = app.data.find_one("patient_address", None, False, False, **payload_data)
+            app.data.update("patient_address", address_id,
+                            payload, patient_address)
+            response_data = app.data.find_one("patient_address", None,
+                                              False, False, **payload_data)
             return response_data
+
 
 def update_address_on_post_callback(request: Request, response: Response):
     response_data = response.json
@@ -97,7 +108,7 @@ def update_address_on_post_callback(request: Request, response: Response):
     if issues:
         if "patientId" in list(issues.keys()):
             items = request.json
-            updated=update_address_on_post(items=items)
+            updated = update_address_on_post(items=items)
             response.data = dumps(sanitize_data(updated))
             response.status_code = HTTPStatus.OK
 
@@ -116,7 +127,8 @@ if __name__ == "__main__":
             app.logger.info("Exiting service")
     else:
         try:
-            http_server = WSGIServer(('0.0.0.0', 5000), application=app, backlog=1000, spawn=10)
+            http_server = WSGIServer(('0.0.0.0', 5000), application=app,
+                                     backlog=1000, spawn=10)
             http_server.serve_forever()
         except KeyboardInterrupt as e:
             app.logger.info("Exiting Service")
