@@ -3,8 +3,10 @@ from datetime import datetime
 import requests
 from eve import Eve
 from eve_swagger import swagger, add_documentation
-from flask import request
+from flask import request, Request, Response, json
 from gevent.pywsgi import WSGIServer
+import copy
+from http import HTTPStatus
 
 from helper import ZylaValidator, get_response_data, get_request_data, fetch_pincode_data
 from logger import get_logger, get_sentry_handler
@@ -69,7 +71,38 @@ def load_pincode_data():
         app.data.insert("pincode_version", version_payload)
 
 
+def update_address_on_post(items):
+    if isinstance(items, list):
+        for item in items:
+            update_address_on_post(item)
+    if isinstance(items, dict):
+        payload = copy.deepcopy(items)
+        payload_key = "patientId"
+        payload_data = {}
+        for k,v in payload.items():
+            if k == payload_key:
+                payload_data.update({k:v})
+        patient_address = app.data.find_one("patient_address",None, False, False, **payload_data)
+        if patient_address:
+            address_id = patient_address.get("_id")
+            payload.pop("patientId")
+            app.data.update("patient_address", address_id, payload, patient_address)
+            return True
+
+def update_address_on_post_callback(request: Request, response: Response):
+    response_data = response.json
+    issues = response_data.get("issues")
+    if issues:
+        if "patientId" in list(issues.keys()):
+            items = request.json
+            updated=update_address_on_post(items=items)
+            response.data = json.dumps(updated)
+            response.status_code = HTTPStatus.OK
+
+
 add_documentation(custom_paths)
+
+app.on_post_POST_patient_address = update_address_on_post_callback
 
 if __name__ == "__main__":
     with app.app_context():

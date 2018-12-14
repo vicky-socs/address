@@ -101,7 +101,8 @@ address_schema = {
         "type": "string"
     },
     "patientId": {
-        "type": "integer"
+        "type": "integer",
+        "unique":True
     },
     "landmark": {
         "type": "string"
@@ -150,8 +151,7 @@ address_resource = {
         "patient_index": ([("patientId", 1)], {"background": True})
     },
     "item_methods":["GET","PATCH","PUT"],
-    "resource_methods" :["GET","POST"],
-    "id_field":"patientId"
+    "resource_methods" :["GET","POST"]
 }
 
 DOMAIN = {
