@@ -5,6 +5,8 @@ import boto3
 from botocore.exceptions import ClientError
 from email_validator import validate_email, EmailNotValidError
 from eve.io.mongo import Validator
+from bson import ObjectId
+from datetime import datetime
 
 from logger import get_logger
 from settings import PINCODE_BUCKET_NAME, PINCODE_FILENAME, AWS_ACCESS_KEY, AWS_SECRET_KEY
@@ -145,3 +147,19 @@ def fetch_pincode_data(pincode_version=None, verify_checksum=False):
         except Exception as e:
             log.error(e)
     return md5sum, update
+
+def sanitize_data(data):
+    if isinstance(data, ObjectId):
+        return str(data)
+    if isinstance(data, dict):
+        for k, v in data.items():
+            if isinstance(v, ObjectId):
+                data[k] = str(v)
+            if isinstance(v, datetime):
+                data[k] = str(v)
+            if isinstance(v, list):
+                v1 = []
+                for d in v:
+                    v1.append(sanitize_data(d))
+                data[k] = v1
+    return data

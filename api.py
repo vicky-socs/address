@@ -7,8 +7,9 @@ from flask import request, Request, Response, json
 from gevent.pywsgi import WSGIServer
 import copy
 from http import HTTPStatus
+from bson.json_util import dumps
 
-from helper import ZylaValidator, get_response_data, get_request_data, fetch_pincode_data
+from helper import ZylaValidator, get_response_data, get_request_data, fetch_pincode_data, sanitize_data
 from logger import get_logger, get_sentry_handler
 from schema import custom_paths
 from settings import LOG_LEVEL, RELEASE_VERSION
@@ -86,8 +87,9 @@ def update_address_on_post(items):
         if patient_address:
             address_id = patient_address.get("_id")
             payload.pop("patientId")
-            app.data.update("patient_address", address_id, payload, patient_address)
-            return True
+            updated_data = app.data.update("patient_address", address_id, payload, patient_address)
+            response_data = app.data.find_one("patient_address", None, False, False, **payload_data)
+            return response_data
 
 def update_address_on_post_callback(request: Request, response: Response):
     response_data = response.json
@@ -96,7 +98,7 @@ def update_address_on_post_callback(request: Request, response: Response):
         if "patientId" in list(issues.keys()):
             items = request.json
             updated=update_address_on_post(items=items)
-            response.data = json.dumps(updated)
+            response.data = dumps(sanitize_data(updated))
             response.status_code = HTTPStatus.OK
 
 
