@@ -91,13 +91,13 @@ pincode_version = {
 }
 
 address_schema = {
-    "line_1": {
+    "line1": {
         "type": "string"
     },
-    "line_2": {
+    "line2": {
         "type": "string"
     },
-    "line_3": {
+    "line3": {
         "type": "string"
     },
     "patientId": {
