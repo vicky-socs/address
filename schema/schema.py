@@ -14,5 +14,23 @@ custom_paths = {
             }
         }
 
+    ],
+    'paths': {
+        '/medicine/schema': {
+            'get': {
+                "summary": "Get schema for medicine service",
+                "responses": {
+                    "200": {
+                        "description": "Schema fetched successfully"
+                    }
+                },
+                "tags": ["Schema"]
+            },
+        }
+    },
+    "tags": [
+        {
+            "name": "Schema"
+        }
     ]
 }
