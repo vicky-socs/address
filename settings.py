@@ -10,6 +10,7 @@ MONGO_USERNAME = os.getenv("MONGO_USERNAME", None)
 MONGO_PASSWORD = os.getenv("MONGO_PASSWORD", None)
 MONGO_AUTH_SOURCE = os.getenv("MONGO_AUTH_SOURCE", "admin")
 MONGO_REPLICA_SET = os.getenv("MONGO_REPLICA_SET", None)
+ZYLA_SERVICE_KEY = os.getenv("ZYLA_SERVICE_KEY")
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 REDIS_DB = int(os.getenv("REDIS_DB", "3"))
@@ -26,18 +27,18 @@ RELEASE_VERSION = BASE_VERSION + ":" + APP_VERSION
 SENTRY_DSN = os.getenv("SENTRY_DSN")
 SWAGGER_HOST = os.getenv("SWAGGER_HOST", "localhost")
 SWAGGER_INFO = {
-        'title': 'Patient Address API',
-        'version': APP_VERSION,
-        'description': 'an API description',
-        'termsOfService': 'https://example.com',
-        'contact': {
-                'name': 'Mrigesh Pokhrel',
-                'email': 'mrigesh@zyla.in'
-        },
-        'license': {
-                'name': 'Proprietary',
-        },
-        'schemes': ['https'],
+    'title': 'Patient Address API',
+    'version': APP_VERSION,
+    'description': 'an API description',
+    'termsOfService': 'https://example.com',
+    'contact': {
+        'name': 'Mrigesh Pokhrel',
+        'email': 'mrigesh@zyla.in'
+    },
+    'license': {
+        'name': 'Proprietary',
+    },
+    'schemes': ['https'],
 }
 ENABLE_HOOK_DESCRIPTION = bool(os.getenv("ENABLE_HOOK_DESCRIPTION", "1"))
 PINCODE_BUCKET_NAME = os.getenv("PINCODE_BUCKET_NAME")
@@ -71,93 +72,93 @@ redis_conn = StrictRedis(host=REDIS_HOST, port=REDIS_PORT,
                          db=REDIS_DB, connection_pool=REDIS_CONN_POOL)
 
 pincode_schema = {
-        "pincode": {
-                "type": "integer",
-                "required": True,
-                "coerce": int
-        },
-        "state": {
-                "type": "string",
-                "required": True
-        },
-        "district": {
-                "type": "string",
-                "required": True
-        }
+    "pincode": {
+        "type": "integer",
+        "required": True,
+        "coerce": int
+    },
+    "state": {
+        "type": "string",
+        "required": True
+    },
+    "district": {
+        "type": "string",
+        "required": True
+    }
 }
 
 pincode_version = {
-        "version": {
-                "type": "string",
-        }
+    "version": {
+        "type": "string",
+    }
 }
 
 address_schema = {
-        "line1": {
-                "type": "string"
-        },
-        "line2": {
-                "type": "string"
-        },
-        "line3": {
-                "type": "string"
-        },
-        "patientId": {
-                "type": "integer",
-                "unique": True
-        },
-        "landmark": {
-                "type": "string"
-        },
-        "district": {
-                "type": "string"
-        },
-        "city": {
-                "type": "string"
-        },
-        "state": {
-                "type": "string"
-        },
-        "pincode": {
-                "type": "integer"
-        }
+    "line1": {
+        "type": "string"
+    },
+    "line2": {
+        "type": "string"
+    },
+    "line3": {
+        "type": "string"
+    },
+    "patientId": {
+        "type": "integer",
+        "unique": True
+    },
+    "landmark": {
+        "type": "string"
+    },
+    "district": {
+        "type": "string"
+    },
+    "city": {
+        "type": "string"
+    },
+    "state": {
+        "type": "string"
+    },
+    "pincode": {
+        "type": "integer"
+    }
 }
 
 pincode_resource = {
-        "schema": pincode_schema,
-        "url": "address/pincode",
-        "additional_lookup": {
-                "url": 'regex([w]+)',
-                "field": "pincode"
-        },
-        "mongo_indexes": {
-                "pincode_index": ([("pincode", 1)], {"background": True})
-        },
-        "item_methods": ["GET", "PATCH", "PUT"],
-        "resource_methods": ["GET", "POST"]
+    "schema": pincode_schema,
+    "url": "address/pincode",
+    "additional_lookup": {
+        "url": 'regex([w]+)',
+        "field": "pincode"
+    },
+    "mongo_indexes": {
+        "pincode_index": ([("pincode", 1)], {"background": True})
+    },
+    "item_methods": ["GET", "PATCH", "PUT"],
+    "resource_methods": ["GET", "POST"]
 }
 
 pincode_version_resource = {
-        "schema": pincode_version,
-        "internal_resource": True
+    "schema": pincode_version,
+    "internal_resource": True
 }
 
 address_resource = {
-        "schema": address_schema,
-        "url": "address",
-        "additional_lookup": {
-                "url": 'regex([w]+)',
-                "field": "patientId"
-        },
-        "mongo_indexes": {
-                "patient_index": ([("patientId", 1)], {"background": True})
-        },
-        "item_methods": ["GET", "PATCH", "PUT"],
-        "resource_methods": ["GET", "POST"]
+    "schema": address_schema,
+    "url": "address",
+    "additional_lookup": {
+        "url": 'regex([w]+)',
+        "field": "patientId"
+    },
+    "mongo_indexes": {
+        "patient_index": ([("patientId", 1)], {"background": True})
+    },
+    "item_methods": ["GET", "PATCH", "PUT"],
+    "resource_methods": ["GET", "POST"]
 }
 
 DOMAIN = {
-        "pincode": pincode_resource,
-        "patient_address": address_resource,
-        "pincode_version": pincode_version_resource
+    "pincode": pincode_resource,
+    "patient_address": address_resource,
+    "pincode_version": pincode_version_resource
 }
