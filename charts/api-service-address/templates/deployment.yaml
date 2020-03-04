@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "address.fullname" . }}{{ .Values.environment }}
+  labels:
+    {{- include "address.labels" . | nindent 4 }}{{ .Values.environment }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "address.selectorLabels" . | nindent 6 }}{{ .Values.environment }}
+  template:
+    metadata:
+      labels:
+        {{- include "address.selectorLabels" . | nindent 8 }}{{ .Values.environment }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /api/v1/address/pincode/122018
+              port: {{ .Values.service.port }}
+              scheme: HTTP
+            # initialDelaySeconds: 10
+            # periodSeconds: 60
+            # successThreshold: 1
+            # timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /api/v1/address/pincode/122018
+              port: {{ .Values.service.port }}
+              scheme: HTTP
+            # initialDelaySeconds: 10
+            # periodSeconds: 60
+            # successThreshold: 1
+            # timeoutSeconds: 1
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: ZYLA_AUTH_ENABLE
+              value: "{{ .Values.zylaAuthEnable }}"
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: access_key
+                  name: awscreds{{ .Values.environment }}
+                  optional: false
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: secret_key
+                  name: awscreds{{ .Values.environment }}
+                  optional: false
+            - name: ZYLA_SERVICE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: address_service
+                  name: zylacreds{{ .Values.environment }}
+                  optional: false
+            - name: SENTRY_DSN
+              valueFrom:
+                configMapKeyRef:
+                  key: address_service
+                  name: sentrydsn{{ .Values.environment }}
+                  optional: false
+          envFrom:
+            - configMapRef:
+                name: addressenv{{ .Values.environment }}
+                optional: false
+            - configMapRef:
+                name: commonenvvariables{{ .Values.environment }}
+                optional: false
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

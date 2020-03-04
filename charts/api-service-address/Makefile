@@ -10,7 +10,7 @@ build: clean
 	helm lint
 
 install: clean build
-	helm install . --name ${NAME}
+	helm install . --name ${NAME}  --values ${CURRENT}/env/values-staging.yaml 
 
 upgrade: clean build
 	helm upgrade ${NAME} .
@@ -23,12 +23,13 @@ clean:
 	rm -rf ${NAME}*.tgz
 
 release: clean
-	helm dependency build
-	helm lint
-	helm init --client-only
-	helm package .
-	curl --fail -u $(CHARTMUSEUM_CREDS_USR):$(CHARTMUSEUM_CREDS_PSW) --data-binary "@$(NAME)-$(shell sed -n 's/^version: //p' Chart.yaml).tgz" $(CHART_REPO)/api/charts
-	rm -rf ${NAME}*.tgz%
+	echo " done"
+#	helm dependency build
+#	helm lint
+#	helm init --client-only
+#	helm package .
+#	curl --fail -u $(CHARTMUSEUM_CREDS_USR):$(CHARTMUSEUM_CREDS_PSW) --data-binary "@$(NAME)-$(shell sed -n 's/^version: //p' Chart.yaml).tgz" $(CHART_REPO)/api/charts
+#	rm -rf ${NAME}*.tgz%
 
 tag:
 ifeq ($(OS),Darwin)
@@ -36,7 +37,7 @@ ifeq ($(OS),Darwin)
 	sed -i "" -e "s/tag:.*/tag: $(RELEASE_VERSION)/" values.yaml
 else ifeq ($(OS),Linux)
 	sed -i -e "s/version:.*/version: $(RELEASE_VERSION)/" Chart.yaml
-	sed -i -e "s|repository:.*|repository: $(DOCKER_REGISTRY)\/zylahealth\/api-service-address|" values.yaml
+	sed -i -e "s|repository:.*|repository: $(DOCKER_REGISTRY)\/nitinyadav745\/api-service-address|" values.yaml
 	sed -i -e "s/tag:.*/tag: $(RELEASE_VERSION)/" values.yaml
 else
 	echo "platfrom $(OS) not supported to release from"

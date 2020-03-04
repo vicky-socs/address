@@ -1,0 +1,14 @@
+# Default values for address.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: 685249416972.dkr.ecr.ap-south-1.amazonaws.com/sandbox/address-service
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 5000
+
+environment: ""

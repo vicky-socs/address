@@ -1,10 +1,11 @@
-apiVersion: skaffold/v1beta2
+apiVersion: skaffold/v1beta11
 kind: Config
 build:
   artifacts:
-  - image: zylahealth/api-service-address
+  - image: nitinyadav745/api-service-address
     context: .
-    docker: {}
+    docker: 
+      network: host
   tagPolicy:
     envTemplate:
       template: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}:{{.VERSION}}'

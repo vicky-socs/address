@@ -2,6 +2,7 @@ import copy
 from datetime import datetime
 from http import HTTPStatus
 
+import requests
 from bson import ObjectId
 from bson.json_util import dumps
 from eve import Eve
@@ -9,16 +10,13 @@ from eve_swagger import add_documentation, swagger
 from flask import request, Request, Response
 from gevent.pywsgi import WSGIServer
 
-from custom_library.custom_http_manager import manager
 from helper import (
     fetch_pincode_data, get_request_data, get_response_data,
     sanitize_data, ZylaValidator
 )
 from logger import get_logger, get_sentry_handler
 from schema import custom_paths
-from settings import (
-    DEBUG, LOG_LEVEL, redis_conn, RELEASE_VERSION
-)
+from settings import DEBUG, LOG_LEVEL, redis_conn, RELEASE_VERSION
 
 
 app = Eve(redis=redis_conn, validator=ZylaValidator)
@@ -27,9 +25,8 @@ app.register_blueprint(swagger)
 
 @app.route("/api/v1/address/schema")
 def address_schema():
-    schema_response = manager.request(
-        method="GET", url="http://localhost:5000/api-docs")
-    return schema_response.data, schema_response.status
+    schema_response = requests.get("http://localhost:5000/api-docs")
+    return schema_response.text, schema_response.status_code
 
 
 @app.before_request

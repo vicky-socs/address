@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: addressenv{{ .Values.environment }}
+data:
+  {{- toYaml .Values.configMap.addressenv | nindent 2 }}
+ 
+
