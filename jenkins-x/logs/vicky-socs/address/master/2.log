@@ -1,0 +1,121 @@
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-credential-initializer-p64fs[0m
+{"level":"warn","ts":1583567224.144635,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/0.8.0-**-support-backwards-incompats\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1583567224.1449153,"logger":"fallback-logger","caller":"creds-init/main.go:40","msg":"Credentials initialized."}
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-working-dir-initializer-lhwkl[0m
+{"level":"warn","ts":1583567225.1466157,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: open /var/run/ko/HEAD: no such file or directory"}
+{"level":"info","ts":1583567225.148415,"logger":"fallback-logger","caller":"bash/main.go:64","msg":"Successfully executed command \"sh -c mkdir -p /workspace/source\"; output "}
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-place-tools[0m
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-git-source-vicky-socs-address-master-qbc7h-nfs78[0m
+{"level":"warn","ts":1583567231.365171,"logger":"fallback-logger","caller":"logging/config.go:69","msg":"Fetch GitHub commit ID from kodata failed: \"ref: refs/heads/0.8.0-**-support-backwards-incompats\" is not a valid GitHub commit ID"}
+{"level":"info","ts":1583567233.4063342,"logger":"fallback-logger","caller":"git/git.go:103","msg":"Successfully cloned https://github.com/vicky-socs/address.git @ v0.0.6 in path /workspace/source"}
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-git-merge[0m
+Using SHAs from PULL_REFS=master:7c82b64e392a835c4acdeafa0237f64bcca9470a
+WARNING: no SHAs to merge, falling back to initial cloned commit
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-setup-jx-git-credentials[0m
+Generated Git credentials file /workspace/xdg_config/git/credentials
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-build-python-unittest[0m
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+OK
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-build-container-build[0m
+[36mINFO[0m[0000] Downloading base image python:3.6-alpine     
+2020/03/07 07:47:16 No matching credentials were found, falling back on anonymous
+[36mINFO[0m[0002] Error while retrieving image from cache: getting file info: stat /workspace/sha256:546d79a1498f299ed2903d6ba0aceee86a1d5a519c096c807e1b186a8450ece1: no such file or directory 
+[36mINFO[0m[0002] Downloading base image python:3.6-alpine     
+2020/03/07 07:47:18 No matching credentials were found, falling back on anonymous
+[36mINFO[0m[0004] Checking for cached layer 685249416972.dkr.ecr.ap-south-1.amazonaws.com/todo/cache:4cb2e1ef217509d59286ad5771a9760a06b49e923e47cf87c21ee18abb9c0fdd... 
+[36mINFO[0m[0004] Using caching version of cmd: RUN ping -c 2 dl-cdn.alpinelinux.org 
+[36mINFO[0m[0004] Checking for cached layer 685249416972.dkr.ecr.ap-south-1.amazonaws.com/todo/cache:b15e9e36c7d44fdf5774e6945632600de645c78616fdfb2c0a10b9d38f220e20... 
+[36mINFO[0m[0004] Using caching version of cmd: RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev 
+[36mINFO[0m[0004] Using files from context: [/workspace/source/requirements.txt] 
+[36mINFO[0m[0004] Checking for cached layer 685249416972.dkr.ecr.ap-south-1.amazonaws.com/todo/cache:1da109990fa5fc8b3043209dfa8606af7dbe152b2da53dbe7737d6600652b681... 
+[36mINFO[0m[0004] Using caching version of cmd: RUN pip install -r requirements.txt 
+[36mINFO[0m[0004] Using files from context: [/workspace/source] 
+[36mINFO[0m[0004] cmd: EXPOSE                                  
+[36mINFO[0m[0004] Adding exposed port: 5000/tcp                
+[36mINFO[0m[0004] Skipping unpacking as no commands require it. 
+[36mINFO[0m[0004] Taking snapshot of full filesystem...        
+[36mINFO[0m[0004] RUN ping -c 2 dl-cdn.alpinelinux.org         
+[36mINFO[0m[0004] Found cached layer, extracting to filesystem 
+[36mINFO[0m[0004] No files changed in this command, skipping snapshotting. 
+[36mINFO[0m[0004] RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev 
+[36mINFO[0m[0004] Found cached layer, extracting to filesystem 
+[36mINFO[0m[0006] Taking snapshot of files...                  
+[36mINFO[0m[0010] Using files from context: [/workspace/source/requirements.txt] 
+[36mINFO[0m[0010] COPY requirements.txt /src/                  
+[36mINFO[0m[0010] Taking snapshot of files...                  
+[36mINFO[0m[0010] WORKDIR /src/                                
+[36mINFO[0m[0010] cmd: workdir                                 
+[36mINFO[0m[0010] Changed working directory to /src            
+[36mINFO[0m[0010] No files changed in this command, skipping snapshotting. 
+[36mINFO[0m[0010] RUN pip install -r requirements.txt          
+[36mINFO[0m[0010] Found cached layer, extracting to filesystem 
+[36mINFO[0m[0013] Taking snapshot of files...                  
+[36mINFO[0m[0016] Using files from context: [/workspace/source] 
+[36mINFO[0m[0016] ADD . .                                      
+[36mINFO[0m[0016] Taking snapshot of files...                  
+[36mINFO[0m[0017] EXPOSE 5000                                  
+[36mINFO[0m[0017] cmd: EXPOSE                                  
+[36mINFO[0m[0017] Adding exposed port: 5000/tcp                
+[36mINFO[0m[0017] No files changed in this command, skipping snapshotting. 
+[36mINFO[0m[0017] CMD ["python","api.py"]                      
+[36mINFO[0m[0017] No files changed in this command, skipping snapshotting. 
+2020/03/07 07:47:33 existing blob: sha256:3ef3538413cf36eb442e6e05dc7f6da90954d86cfb2c443eb2b4db362969a9c4
+2020/03/07 07:47:33 existing blob: sha256:c9b1b535fdd91a9855fb7f82348177e5f019329a58c53c47272962dd60f71fc9
+2020/03/07 07:47:33 existing blob: sha256:e99c5e32063ef64bfc2b19c6a6523cad11be57217678b14b2f8f4d8deaff397b
+2020/03/07 07:47:33 existing blob: sha256:ca9525f635d9d2cc40257e393bc815ab4dcc7c5e84e971dacbf52fa2f6d7119c
+2020/03/07 07:47:33 existing blob: sha256:2cc5ad85d9abaadf23d5ae53c3f32e7ccb2df1956869980bfd2491ff396d348a
+2020/03/07 07:47:33 pushed blob: sha256:b546c84a3c97e57201e1ff1cf56e0ed22c24a09d342d0a7cf07717764373c139
+2020/03/07 07:47:33 pushed blob: sha256:98132b643234b9a89db933191dfffb1c58df6aa2bde9667cd7ca64cc8abe2f9e
+2020/03/07 07:47:33 pushed blob: sha256:4ea57c1d013bf1b7c739e0b163312be522051a5c8b513fb5289dc67e0d915220
+2020/03/07 07:47:39 pushed blob: sha256:b4b931ba57739a338a1b39f96abdfee8cc48a3b717ff4b3700a812c64bbc1f3a
+2020/03/07 07:47:40 pushed blob: sha256:4f01807a7f95ac99f73492509dee0167672cdfd04463bca7b28f8da2a5dfd308
+2020/03/07 07:47:40 685249416972.dkr.ecr.ap-south-1.amazonaws.com/vicky-socs/address:0.0.6: digest: sha256:a7d74f1e1dae51827f73ba428dda1ed70e34956c9f0c79661e3e8ad7ee7c397f size: 1732
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-build-post-build[0m
+no CVE provider running in the current ** namespace so skip adding image to be analysed
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-promote-changelog[0m
+Converted /workspace/source/charts/address to an unshallow repository
+Generating change log from git ref f1acd25ca94a9a19ddbdd7ea12c8464ca13b4273 => 1831f85709ecf9dbaccb42c975e72b43139b12de
+WARNING: No release found for vicky-socs/address and tag v0.0.6 so creating a new release
+Updated the release information at https://github.com/vicky-socs/address/releases/tag/v0.0.6
+generated: /workspace/source/charts/address/templates/release.yaml
+Created Release address-0-0-6 resource in namespace **
+Updating PipelineActivity vicky-socs-address-master-2 with version 0.0.6
+Updated PipelineActivities vicky-socs-address-master-2 with release notes URL: https://github.com/vicky-socs/address/releases/tag/v0.0.6
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-promote-helm-release[0m
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Adding missing Helm repo: storage.googleapis.com https://storage.googleapis.com/chartmuseum.jenkins-x.io
+Successfully added Helm repository storage.googleapis.com.
+Adding missing Helm repo: jenkins-x-chartmuseum http://jenkins-x-chartmuseum:8080
+Successfully added Helm repository jenkins-x-chartmuseum.
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Uploading chart file address-0.0.6.tgz to http://jenkins-x-chartmuseum:8080/api/charts
+Received 201 response: {"saved":true}
+
+Showing logs for build [32mvicky-socs-address-master-qbc7h-2[0m stage [32mfrom-build-pack[0m and container [32mstep-promote-jx-promote[0m
+WARNING: prow based install so skip waiting for the merge of Pull Requests to go green as currently there is an issue with gettingstatuses from the PR, see https://github.com/jenkins-x/**/issues/2410
+WARNING: No $CHART_REPOSITORY defined so using the default value of: http://jenkins-x-chartmuseum:8080
+Promoting app address version 0.0.6 to namespace **-staging
+WARNING: 
+Created Pull Request: https://github.com/vicky-socs/environment-non-prod-cluster-staging/pull/18
+Added label updatebot to Pull Request https://github.com/vicky-socs/environment-non-prod-cluster-staging/pull/18
+got git provider status pending from PR https://github.com/vicky-socs/environment-non-prod-cluster-staging/pull/18
+got git provider status pending from PR https://github.com/vicky-socs/environment-non-prod-cluster-staging/pull/18
+got git provider status pending from PR https://github.com/vicky-socs/environment-non-prod-cluster-staging/pull/18
+got git provider status pending from PR https://github.com/vicky-socs/environment-non-prod-cluster-staging/pull/18
+Pull Request https://github.com/vicky-socs/environment-non-prod-cluster-staging/pull/18 is merged at sha de55740f535ae945f0c34fcd17405fb378ad138c
+Pull Request merged but we are not waiting for the update pipeline to complete!
+WARNING: Could not find the service URL in namespace **-staging for names address, **-address, **-staging-address
