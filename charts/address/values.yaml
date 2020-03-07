@@ -15,8 +15,8 @@ zylaAuthEnable: 0
 replicaCount: 2
 
 image:
-  repository:
-  tag: 
+  repository: 685249416972.dkr.ecr.ap-south-1.amazonaws.com/vicky-socs/address
+  tag: 0.0.6
   pullPolicy: Always
 #  pullPolicy: IfNotPresent
 
